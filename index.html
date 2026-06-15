@@ -3,221 +3,253 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FEU-C GWA Calculator</title>
+    <title>FEU Student Portal GWA Calculator</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap');
+
         /* --- BRANDED PORTAL HEADER STYLES --- */
         .portal-header {
-            background-color: #008444; /* Match the vibrant FEU green from the image */
+            background-color: #008444; /* FEU Tamarind Green */
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 18px 32px;
+            padding: 18px 20px;
             color: #ffffff;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             font-family: "Poppins", sans-serif;
         }
-        .menu-icon {
-            font-size: 24px;
-            cursor: pointer;
-            user-select: none;
-        }   
-        .feu-branding {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        /* Placeholder for FEU Seal graphic */
-        .feu-seal {
-            width: 32px;
-            height: 32px;
-            background-color: #fbc02d; 
-            border-radius: 50%;
-            border: 2px solid #ffffff;
-            display: inline-block;
-        }
         .logo-text {
-            font-weight:normal;
+            font-weight: 500;
             font-size: 1.1rem;
             letter-spacing: 0.5px;
-            font-family: "Poppins", sans-serif;
-        }
-        .logout-icon {
-            font-size: 20px;
-            cursor: pointer;
+            text-align: center;
         }
 
-        /* --- THE ORIGINAL FIRST DESIGN LAYOUT --- */
+        /* --- DYNAMIC FLEXBOX ARCHITECTURE --- */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f6f9;
             color: #333;
             margin: 0;
             padding: 0;
-
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
         
-        /* Sub-Header Section title */
-        .page-title-container {
-            max-width: 600px;
-            margin: 30px auto 0 auto;
+        /* Main structural wrapper to preserve responsive margins */
+        .main-wrapper {
+            flex: 1;
+            width: 100%;
+            max-width: 700px; /* Bounded stretch limit */
+            margin: 0 auto;
             padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .page-title-container {
+            margin: 30px 0 10px 0;
         }
         .page-title-container h1 {
             font-size: 2rem;
             color: #1a252f;
-            margin: 0 0 5px 0;
+            margin: 0;
             font-weight: 400;
+            font-family: "Poppins", sans-serif;
         }
 
+        /* --- NEW DYNAMIC CONTAINER & ROWS --- */
         .container {
             background: #ffffff;
             padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            max-width: 600px;
-            margin: 20px auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
             font-family: "Roboto", sans-serif;
+            margin-bottom: 40px;
+            box-sizing: border-box;
+            width: 100%; /* Dynamically matches parent bounds */
         }
+        
         .scale-info {
             color: #7f8c8d;
             font-size: 0.9rem;
             margin-bottom: 25px;
         }
+
+        /* Responsive row configuration using flex-wrap */
         .row {
             display: flex;
+            flex-wrap: wrap; 
             gap: 15px;
-            margin-bottom: 15px;
-            align-items: center;
+            margin-bottom: 20px;
+            align-items: flex-end; /* Keeps remove button even with input inputs */
         }
+        
         .input-group {
-            flex: 1;
+            flex: 2 1 200px; /* Stretches dynamically, drops to new line cleanly if squished */
             display: flex;
             flex-direction: column;
         }
+        .input-group.size-grade {
+            flex: 1 1 90px;
+        }
+        .input-group.size-units {
+            flex: 1 1 80px;
+        }
+
         label {
             font-size: 0.85rem;
             color: #7f8c8d;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         input {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
             font-size: 1rem;
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+            width: 100%;
         }
         input:focus {
             border-color: #3498db;
             outline: none;
         }
+        
+        /* --- ACTION TRIGGERS --- */
         button {
             cursor: pointer;
-            padding: 10px 15px;
+            padding: 12px 16px;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             font-weight: bold;
-            transition: background 0.2s;
+            transition: background 0.2s, transform 0.1s;
+        }
+        button:active {
+            transform: scale(0.98);
         }
         .btn-add {
             background-color: #3498db;
             color: white;
             width: 100%;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             font-size: 1rem;
         }
         .btn-add:hover { background-color: #2980b9; }
+        
         .btn-remove {
             background-color: #e74c3c;
             color: white;
-            margin-top: 20px;
+            height: 40px; /* Strict alignment bounding with base text inputs */
+            padding: 0 15px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
         .btn-remove:hover { background-color: #c0392b; }
+        
         .btn-calc {
-            background-color: #2ecc71;
+            background-color: #008444; /* Changed to match university style guidelines */
             color: white;
             width: 100%;
             font-size: 1.1rem;
-            padding: 12px;
+            padding: 14px;
         }
-        .btn-calc:hover { background-color: #27ae60; }
+        .btn-calc:hover { background-color: #006b36; }
+        
         .result-box {
             margin-top: 25px;
-            padding: 15px;
-            background-color: #ecf0f1;
-            border-radius: 4px;
+            padding: 20px;
+            background-color: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 6px;
             text-align: center;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: bold;
-            color: #2c3e50;
+            color: #1e293b;
         }
 
-        
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+        /* --- STABLE STICKY FOOTER --- */
+        .site-footer {
+            background-color: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            padding: 25px 20px;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .footer-credits {
+            font-size: 0.9rem;
+            color: #4a5568;
+            margin: 0 0 12px 0;
+        }
+        .footer-credits strong {
+            color: #008444;
+        }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            margin-bottom: 12px;
+        }
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #f1f5f9;
+            color: #4a5568;
+            transition: all 0.2s ease-in-out;
+            text-decoration: none;
+        }
+        .social-icon:hover {
+            transform: translateY(-3px);
+            color: #ffffff;
+        }
+        .icon-fb:hover { background-color: #1877F2; }
+        .icon-mail:hover { background-color: #EA4335; }
+        .icon-behance:hover { background-color: #0057ff; }
+        .icon-github:hover { background-color: #24292e; }
 
-        /* --- FOOTER LAYOUT & INTERACTIONS --- */
-.site-footer {
-    background-color: #ffffff;
-    border-top: 1px solid #e2e8f0;
-    padding: 25px 20px;
-    text-align: center;
-    font-family: Arial, sans-serif;
-    margin-top: auto; /* Works with a flexbox body layout to stay pinned at the bottom */
-}
-.footer-content {
-    max-width: 600px;
-    margin: 0 auto;
-}
-.footer-credits {
-    font-size: 0.9rem;
-    color: #4a5568;
-    margin: 0 0 12px 0;
-}
-.footer-credits strong {
-    color: #008444; /* FEU-inspired Green accent */
-}
-.social-links {
-    display: flex;
-    justify-content: center;
-    gap: 18px;
-    margin-bottom: 12px;
-}
-.social-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background-color: #f1f5f9;
-    color: #4a5568;
-    transition: all 0.2s ease-in-out;
-    text-decoration: none;
-}
-/* Brand identity hover triggers */
-.social-icon:hover {
-    transform: translateY(-3px);
-    color: #ffffff;
-}
-.icon-fb:hover { background-color: #1877F2; }
-.icon-mail:hover { background-color: #EA4335; }
-.icon-behance:hover { background-color: #0057ff; }
-.icon-github:hover { background-color: #24292e; }
+        .social-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+        .footer-version {
+            font-size: 0.75rem;
+            color: #a0aec0;
+            margin: 0;
+        }
 
-.social-icon svg {
-    width: 18px;
-    height: 18px;
-    fill: currentColor;
-}
-.footer-version {
-    font-size: 0.75rem;
-    color: #a0aec0;
-    margin: 0;
-}
-
+        /* --- MOBILE VIEWPORTS EXTRA COMPACTION --- */
+        @media (max-width: 520px) {
+            .container {
+                padding: 15px;
+            }
+            .row {
+                gap: 10px;
+                border-bottom: 1px dashed #e2e8f0;
+                padding-bottom: 15px;
+            }
+            .row:last-child {
+                border-bottom: none;
+            }
+            .btn-remove {
+                width: 100%;
+                height: 35px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -226,127 +258,50 @@
     <span class="logo-text">FAR EASTERN UNIVERSITY CAVITE</span>
 </header>
 
-<div class="page-title-container">
-    <h1>GWA Calculator</h1>
-</div>
+<div class="main-wrapper">
+    <div class="page-title-container">
+        <h1>My Grades</h1>
+    </div>
 
-<div class="container">
-    <div class="scale-info">Grading Scale: 4.0 is Highest, 1.0 is Lowest</div>
-    
-    <div id="subject-rows">
-        <div class="row class-row">
-            <div class="input-group">
-                <label>Subject / Description (Optional)</label>
-                <input type="text" placeholder="e.g., Math 1">
+    <div class="container">
+        <div class="scale-info">Grading Scale: 4.0 is Highest, 1.0 is Lowest</div>
+        
+        <div id="subject-rows">
+            <div class="row class-row">
+                <div class="input-group">
+                    <label>Subject / Description (Optional)</label>
+                    <input type="text" placeholder="e.g., Math 1">
+                </div>
+                <div class="input-group size-grade">
+                    <label>Grade Point</label>
+                    <input type="number" class="grade" step="0.01" min="1.0" max="4.0" placeholder="3.5" required>
+                </div>
+                <div class="input-group size-units">
+                    <label>Units</label>
+                    <input type="number" class="units" step="0.5" min="0" placeholder="3" required>
+                </div>
+                <button type="button" class="btn-remove" onclick="removeRow(this)">✕</button>
             </div>
-            <div class="input-group" style="flex: 0.5;">
-                <label>Grade Point</label>
-                <input type="number" class="grade" step="0.01" min="1.0" max="4.0" placeholder="3.5" required>
-            </div>
-            <div class="input-group" style="flex: 0.4;">
-                <label>Units</label>
-                <input type="number" class="units" step="0.5" min="0" placeholder="3" required>
-            </div>
-            <button type="button" class="btn-remove" onclick="removeRow(this)">✕</button>
+        </div>
+
+        <button type="button" class="btn-add" onclick="addRow()">+ Add Subject</button>
+        <button type="button" class="btn-calc" onclick="calculateGWA()">Calculate GWA</button>
+
+        <div class="result-box" id="gwa-result">
+            GWA: --
         </div>
     </div>
-
-    <button type="button" class="btn-add" onclick="addRow()">+ Add Subject</button>
-    <button type="button" class="btn-calc" onclick="calculateGWA()">Calculate GWA</button>
-
-    <div class="result-box" id="gwa-result">
-        GWA: --
-    </div>
 </div>
 
-<script>
-    function addRow() {
-        const wrapper = document.getElementById('subject-rows');
-        const newRow = document.createElement('div');
-        newRow.className = 'row class-row';
-        newRow.innerHTML = `
-            <div class="input-group">
-                <label>Subject / Description (Optional)</label>
-                <input type="text" placeholder="e.g., Subject">
-            </div>
-            <div class="input-group" style="flex: 0.5;">
-                <label>Grade Point</label>
-                <input type="number" class="grade" step="0.01" min="1.0" max="4.0" placeholder="3.5" required>
-            </div>
-            <div class="input-group" style="flex: 0.4;">
-                <label>Units</label>
-                <input type="number" class="units" step="0.5" min="0" placeholder="3" required>
-            </div>
-            <button type="button" class="btn-remove" onclick="removeRow(this)">✕</button>
-        `;
-        wrapper.appendChild(newRow);
-    }
-
-    function removeRow(button) {
-        const rows = document.getElementsByClassName('class-row');
-        if (rows.length > 1) {
-            button.parentElement.remove();
-        } else {
-            alert("You need at least one subject to calculate GWA!");
-        }
-    }
-
-    function calculateGWA() {
-        const grades = document.getElementsByClassName('grade');
-        const units = document.getElementsByClassName('units');
-        
-        let totalQualityPoints = 0;
-        let totalUnits = 0;
-
-        for (let i = 0; i < grades.length; i++) {
-            const gradeValue = parseFloat(grades[i].value);
-            const unitValue = parseFloat(units[i].value);
-
-            if (!isNaN(gradeValue) && !isNaN(unitValue)) {
-                if (gradeValue < 1.0 || gradeValue > 4.0) {
-                    alert(`Please enter a grade between 1.0 and 4.0 in row ${i + 1}.`);
-                    return;
-                }
-                totalQualityPoints += (gradeValue * unitValue);
-                totalUnits += unitValue;
-            }
-        }
-
-        if (totalUnits === 0) {
-            document.getElementById('gwa-result').innerText = "Please enter valid Grades and Units.";
-            return;
-        }
-
-        const finalGWA = totalQualityPoints / totalUnits;
-        document.getElementById('gwa-result').innerText = `GWA: ${finalGWA.toFixed(2)}`;
-    }
-</script>
-
-</body>
 <footer class="site-footer">
     <div class="footer-content">
         <p class="footer-credits">Developed by <strong>Ferrie Agustine</strong></p>
         
         <div class="social-links">
-            <!-- Facebook -->
             <a href="https://facebook.com/yourprofile" class="social-icon icon-fb" target="_blank" title="Facebook">
                 <svg viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/></svg>
             </a>
-            <!-- Email -->
             <a href="mailto:your.email@example.com" class="social-icon icon-mail" title="Email">
                 <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
             </a>
-            <!-- Behance -->
-            <a href="https://behance.net/yourprofile" class="social-icon icon-behance" target="_blank" title="Behance">
-                <svg viewBox="0 0 24 24"><path d="M8.2 5c1.7 0 3 .3 3.8 1 .7.6 1.1 1.5 1.1 2.6 0 1.2-.5 2.1-1.4 2.7.Point1.4.1.7.5 1.2 1.1.5.6 1.1 1.5 1.1 2.8 0 1.2-.4 2.3-1.2 3.1-.9.8-2.3 1.2-4.3 1.2H2V5h6.2zm-2.5 5.4h2.2c1.1 0 1.7-.4 1.7-1.2 0-.8-.6-1.2-1.7-1.2H5.7v2.4zm0 5.4h2.5c1.2 0 1.9-.4 1.9-1.3 0-.9-.7-1.3-1.9-1.3H5.7v2.6zm13.1-4.1c.1-1.3-.3-2.3-1.1-3-1-.7-2.2-1.1-3.6-1.1-1.5 0-2.7.5-3.6 1.4-.9.9-1.4 2.2-1.4 3.9 0 1.6.4 2.9 1.3 3.8.9.9 2.1 1.3 3.7 1.3 2.5 0 4.2-1.3 4.4-3.9h-2.3c-.1.9-.8 1.4-2.1 1.4-1.2 0-1.9-.6-2.1-1.8h7.2v-.5zm-4.9-1.8c.2-1 .8-1.5 1.8-1.5s1.5.5 1.7 1.5h-3.5zm-3.6-5h5v1.2h-5V6.3z"/></svg>
-            </a>
-            <!-- GitHub -->
-            <a href="https://github.com/yourprofile" class="social-icon icon-github" target="_blank" title="GitHub">
-                <svg viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.1.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
-            </a>
-        </div>
-        
-        <p class="footer-version">v1.0.0 • FEU Portal Extension Concept</p>
-    </div>
-</footer>
-</html>
+            <a href="https://
